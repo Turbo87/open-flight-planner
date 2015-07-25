@@ -1,3 +1,5 @@
+language: node_js
+
 env:
   global:
     - GH_REF: github.com/Turbo87/open-flight-planner.git

@@ -2,10 +2,6 @@
 
 set -e
 
-rm -rf out || exit 0;
-
-npm run build
-
 cd out
 git init
 git config user.name "Travis CI"

@@ -4,7 +4,7 @@ set -e
 
 rm -rf out || exit 0;
 
-gulp
+npm run build
 
 cd out
 git init

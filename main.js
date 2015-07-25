@@ -57,10 +57,7 @@ ol.inherits(app.Drag, ol.interaction.Pointer);
 app.Drag.prototype.handleDownEvent = function(evt) {
     var map = evt.map;
 
-    var feature = map.forEachFeatureAtPixel(evt.pixel,
-        function(feature) {
-            return feature;
-        });
+    var feature = map.forEachFeatureAtPixel(evt.pixel, feature => feature);
 
     if (feature) {
         this.coordinate_ = evt.coordinate;
@@ -93,10 +90,7 @@ app.Drag.prototype.handleDragEvent = function(evt) {
 app.Drag.prototype.handleMoveEvent = function(evt) {
     if (this.cursor_) {
         var map = evt.map;
-        var feature = map.forEachFeatureAtPixel(evt.pixel,
-            function(feature) {
-                return feature;
-            });
+        var feature = map.forEachFeatureAtPixel(evt.pixel, feature => feature);
         var element = evt.map.getTargetElement();
         if (feature) {
             if (element.style.cursor != this.cursor_) {
@@ -130,7 +124,7 @@ var geolocation = new ol.Geolocation({
     projection: view.getProjection()
 });
 
-geolocation.on('change', function() {
+geolocation.on('change', () => {
     map.beforeRender(ol.animation.pan({
         source: view.getCenter(),
         duration: 250

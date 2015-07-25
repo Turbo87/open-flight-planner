@@ -68,3 +68,7 @@ var map = new ol.Map({
     layers: [backgroundLayer, vectorLayer],
     view: view
 });
+
+var fullScreenControl = new ol.control.FullScreen();
+
+fullScreenControl.setMap(map);

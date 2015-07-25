@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var babel = require('gulp-babel');
+var uglify = require('gulp-uglify');
 
 gulp.task('copy:files', function() {
     return gulp.src(['LICENSE', 'README.md', 'index.html'])
@@ -9,6 +10,7 @@ gulp.task('copy:files', function() {
 gulp.task('build:js', function() {
     return gulp.src('main.js')
         .pipe(babel())
+        .pipe(uglify())
         .pipe(gulp.dest('out'));
 });
 

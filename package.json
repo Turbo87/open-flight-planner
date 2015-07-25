@@ -11,5 +11,8 @@
     "url": "https://github.com/Turbo87/open-flight-planner/issues"
   },
   "homepage": "https://turbo87.github.com/open-flight-planner/",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  }
 }

@@ -3,9 +3,8 @@
 set -e
 
 rm -rf out || exit 0;
-mkdir out;
 
-./compile.sh
+gulp
 
 cd out
 git init

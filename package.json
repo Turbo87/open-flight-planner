@@ -1,0 +1,15 @@
+{
+  "name": "open-flight-planner",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Turbo87/open-flight-planner.git"
+  },
+  "author": "Tobias Bieniek <tobias.bieniek@gmx.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Turbo87/open-flight-planner/issues"
+  },
+  "homepage": "https://turbo87.github.com/open-flight-planner/",
+  "private": true
+}

@@ -21,11 +21,15 @@
 <body>
 <div id="map" class="map"></div>
 <script type="text/javascript">
+    var MAPBOX_TOKEN = 'pk.eyJ1IjoidGJpZW5pZWsiLCJhIjoiMGFmZGM3MTE1Nzc0ZGQ2NDkwZDc2MDQ2NDdiZGViMDYifQ.yxuaR8XhvnRpesaB_BXGyQ';
+
     var map = new ol.Map({
         target: 'map',
         layers: [
             new ol.layer.Tile({
-                source: new ol.source.MapQuest({layer: 'sat'})
+                source: new ol.source.XYZ({
+                    url: 'https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + MAPBOX_TOKEN
+                })
             })
         ],
         view: new ol.View({

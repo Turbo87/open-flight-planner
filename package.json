@@ -13,6 +13,7 @@
   "homepage": "https://turbo87.github.com/open-flight-planner/",
   "private": true,
   "devDependencies": {
-    "gulp": "^3.9.0"
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0"
   }
 }

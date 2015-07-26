@@ -32,13 +32,15 @@ geolocation.on('change', () => {
 // enable tracking
 geolocation.setTracking(true);
 
-var iconFeature = new ol.Feature({
-    geometry: new ol.geom.Point(ol.proj.transform([7, 51], 'EPSG:4326', 'EPSG:3857'))
-});
+var turnpoints = [];
 
-var iconFeature2 = new ol.Feature({
+turnpoints.push(new ol.Feature({
+    geometry: new ol.geom.Point(ol.proj.transform([7, 51], 'EPSG:4326', 'EPSG:3857'))
+}));
+
+turnpoints.push(new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.transform([8, 51.5], 'EPSG:4326', 'EPSG:3857'))
-});
+}));
 
 var iconStyle = new ol.style.Style({
     image: new ol.style.Icon(({
@@ -50,15 +52,13 @@ var iconStyle = new ol.style.Style({
     }))
 });
 
-iconFeature.setStyle(iconStyle);
-iconFeature2.setStyle(iconStyle);
-
 var vectorSource = new ol.source.Vector({
-    features: [iconFeature, iconFeature2]
+    features: turnpoints
 });
 
 var vectorLayer = new ol.layer.Vector({
-    source: vectorSource
+    source: vectorSource,
+    style: iconStyle
 });
 
 var backgroundLayer = new ol.layer.Tile({

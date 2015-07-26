@@ -3,20 +3,13 @@ import MapboxSource from './src/mapbox/source';
 var MAPBOX_TOKEN = 'pk.eyJ1IjoidGJpZW5pZWsiLCJhIjoiMGFmZGM3MTE1Nzc0ZGQ2NDkwZDc2MDQ2NDdiZGViMDYifQ.yxuaR8XhvnRpesaB_BXGyQ';
 
 
-/**
- * Define a namespace for the application.
- */
-window.app = {};
-var app = window.app;
-
-
-app.Drag = class extends ol.interaction.Pointer {
+class Drag extends ol.interaction.Pointer {
     constructor() {
         super({
-            handleDownEvent: app.Drag.prototype.handleDownEvent,
-            handleDragEvent: app.Drag.prototype.handleDragEvent,
-            handleMoveEvent: app.Drag.prototype.handleMoveEvent,
-            handleUpEvent: app.Drag.prototype.handleUpEvent
+            handleDownEvent: Drag.prototype.handleDownEvent,
+            handleDragEvent: Drag.prototype.handleDragEvent,
+            handleMoveEvent: Drag.prototype.handleMoveEvent,
+            handleUpEvent: Drag.prototype.handleUpEvent
         });
 
         /**
@@ -170,7 +163,7 @@ var backgroundLayer = new ol.layer.Tile({
 
 var map = new ol.Map({
     target: 'map',
-    interactions: ol.interaction.defaults().extend([new app.Drag()]),
+    interactions: ol.interaction.defaults().extend([new Drag()]),
     layers: [backgroundLayer, vectorLayer],
     view: view
 });

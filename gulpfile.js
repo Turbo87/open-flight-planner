@@ -1,10 +1,18 @@
-var gulp = require('gulp');
-var babel = require('gulp-babel');
-var uglify = require('gulp-uglify');
+'use strict';
 
-paths = {
+var gulp = require('gulp');
+var babelify = require('babelify');
+var uglify = require('gulp-uglify');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var sourcemaps = require('gulp-sourcemaps');
+var gutil = require('gulp-util');
+
+var paths = {
     files: ['LICENSE', 'README.md', 'index.html'],
-    scripts: 'main.js'
+    mainScript: 'main.js',
+    scripts: ['main.js', 'src/**/*.js'],
 };
 
 gulp.task('copy:files', function() {
@@ -13,9 +21,18 @@ gulp.task('copy:files', function() {
 });
 
 gulp.task('build:js', function() {
-    return gulp.src(paths.scripts)
-        .pipe(babel())
+    return browserify({
+            entries: paths.mainScript,
+            debug: true
+        })
+        .transform(babelify)
+        .bundle()
+        .pipe(source(paths.mainScript))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(uglify())
+        .on('error', gutil.log)
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('out'));
 });
 

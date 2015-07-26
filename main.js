@@ -33,10 +33,11 @@ geolocation.on('change', () => {
 geolocation.setTracking(true);
 
 var iconFeature = new ol.Feature({
-    geometry: new ol.geom.Point(ol.proj.transform([7, 51], 'EPSG:4326', 'EPSG:3857')),
-    name: 'Null Island',
-    population: 4000,
-    rainfall: 500
+    geometry: new ol.geom.Point(ol.proj.transform([7, 51], 'EPSG:4326', 'EPSG:3857'))
+});
+
+var iconFeature2 = new ol.Feature({
+    geometry: new ol.geom.Point(ol.proj.transform([8, 51.5], 'EPSG:4326', 'EPSG:3857'))
 });
 
 var iconStyle = new ol.style.Style({
@@ -50,9 +51,10 @@ var iconStyle = new ol.style.Style({
 });
 
 iconFeature.setStyle(iconStyle);
+iconFeature2.setStyle(iconStyle);
 
 var vectorSource = new ol.source.Vector({
-    features: [iconFeature]
+    features: [iconFeature, iconFeature2]
 });
 
 var vectorLayer = new ol.layer.Vector({

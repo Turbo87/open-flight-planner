@@ -162,10 +162,16 @@ var vectorLayer = new ol.layer.Vector({
     source: vectorSource
 });
 
+class MapboxSource extends ol.source.XYZ {
+    constructor(access_token, mapid='mapbox.streets', format='png') {
+        super({
+            url: `https://api.mapbox.com/v4/${mapid}/{z}/{x}/{y}.${format}?access_token=${access_token}`
+        });
+    }
+}
+
 var backgroundLayer = new ol.layer.Tile({
-    source: new ol.source.XYZ({
-        url: 'https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + MAPBOX_TOKEN
-    })
+    source: new MapboxSource(MAPBOX_TOKEN)
 });
 
 var map = new ol.Map({

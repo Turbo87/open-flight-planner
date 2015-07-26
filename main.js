@@ -1,7 +1,6 @@
 import MapboxSource from './src/mapbox/source';
 import Drag from './src/drag'
-
-var MAPBOX_TOKEN = 'pk.eyJ1IjoidGJpZW5pZWsiLCJhIjoiMGFmZGM3MTE1Nzc0ZGQ2NDkwZDc2MDQ2NDdiZGViMDYifQ.yxuaR8XhvnRpesaB_BXGyQ';
+import {MAPBOX_TOKEN} from './src/settings';
 
 var view = new ol.View({
     center: ol.proj.transform([7, 51], 'EPSG:4326', 'EPSG:3857'),

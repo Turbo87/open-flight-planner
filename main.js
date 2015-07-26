@@ -1,10 +1,10 @@
 import MapboxSource from './src/mapbox/source';
 import Drag from './src/drag'
-import {MAPBOX_TOKEN} from './src/settings';
+import {INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM, MAPBOX_TOKEN} from './src/settings';
 
 var view = new ol.View({
-    center: ol.proj.transform([7, 51], 'EPSG:4326', 'EPSG:3857'),
-    zoom: 5
+    center: ol.proj.transform(INITIAL_MAP_CENTER, 'EPSG:4326', 'EPSG:3857'),
+    zoom: INITIAL_MAP_ZOOM
 });
 
 var geolocation = new ol.Geolocation({

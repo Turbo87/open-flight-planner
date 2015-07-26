@@ -42,23 +42,19 @@ turnpoints.push(new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.transform([8, 51.5], 'EPSG:4326', 'EPSG:3857'))
 }));
 
-var iconStyle = new ol.style.Style({
-    image: new ol.style.Icon(({
-        anchor: [0.5, 46],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
-        opacity: 0.75,
-        src: 'http://openlayers.org/en/v3.7.0/examples/data/icon.png'
-    }))
-});
-
-var vectorSource = new ol.source.Vector({
-    features: turnpoints
-});
-
-var vectorLayer = new ol.layer.Vector({
-    source: vectorSource,
-    style: iconStyle
+var turnpointLayer = new ol.layer.Vector({
+    source: new ol.source.Vector({
+        features: turnpoints
+    }),
+    style: new ol.style.Style({
+        image: new ol.style.Icon(({
+            anchor: [0.5, 46],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'pixels',
+            opacity: 0.75,
+            src: 'http://openlayers.org/en/v3.7.0/examples/data/icon.png'
+        }))
+    })
 });
 
 var backgroundLayer = new ol.layer.Tile({
@@ -68,7 +64,7 @@ var backgroundLayer = new ol.layer.Tile({
 var map = new ol.Map({
     target: 'map',
     interactions: ol.interaction.defaults().extend([new Drag()]),
-    layers: [backgroundLayer, vectorLayer],
+    layers: [backgroundLayer, turnpointLayer],
     view: view
 });
 

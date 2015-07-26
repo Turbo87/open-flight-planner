@@ -1,3 +1,5 @@
+import MapboxSource from './src/mapbox/source';
+
 var MAPBOX_TOKEN = 'pk.eyJ1IjoidGJpZW5pZWsiLCJhIjoiMGFmZGM3MTE1Nzc0ZGQ2NDkwZDc2MDQ2NDdiZGViMDYifQ.yxuaR8XhvnRpesaB_BXGyQ';
 
 
@@ -161,14 +163,6 @@ var vectorSource = new ol.source.Vector({
 var vectorLayer = new ol.layer.Vector({
     source: vectorSource
 });
-
-class MapboxSource extends ol.source.XYZ {
-    constructor(access_token, mapid='mapbox.streets', format='png') {
-        super({
-            url: `https://api.mapbox.com/v4/${mapid}/{z}/{x}/{y}.${format}?access_token=${access_token}`
-        });
-    }
-}
 
 var backgroundLayer = new ol.layer.Tile({
     source: new MapboxSource(MAPBOX_TOKEN)

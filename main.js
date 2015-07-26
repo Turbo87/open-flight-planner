@@ -35,17 +35,17 @@ geolocation.setTracking(true);
 
 var turnpoints = new Turnpoints();
 
-turnpoints.add(new ol.Feature({
+turnpoints.push(new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.transform([7, 51], 'EPSG:4326', 'EPSG:3857'))
 }));
 
-turnpoints.add(new ol.Feature({
+turnpoints.push(new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.transform([8, 51.5], 'EPSG:4326', 'EPSG:3857'))
 }));
 
 var turnpointLayer = new ol.layer.Vector({
     source: new ol.source.Vector({
-        features: turnpoints.features
+        features: turnpoints.getArray()
     }),
     style: new ol.style.Style({
         image: new ol.style.Icon(({

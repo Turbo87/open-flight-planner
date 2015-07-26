@@ -1,14 +1,6 @@
-export default class Turnpoints {
+export default class Turnpoints extends ol.Collection {
     constructor() {
-        this._features = [];
-    }
-
-    get features() {
-        return this._features;
-    }
-
-    add(feature) {
-        this._features.push(feature);
+        super([]);
     }
 }
 

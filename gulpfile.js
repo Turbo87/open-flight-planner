@@ -8,6 +8,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
+var browserSync = require('browser-sync').create();
 
 var paths = {
     files: ['LICENSE', 'README.md', 'index.html'],
@@ -36,9 +37,17 @@ gulp.task('build:js', function() {
         .pipe(gulp.dest('out'));
 });
 
+gulp.task('browser-sync', ['default'], function() {
+    browserSync.init({
+        server: {
+            baseDir: "out"
+        }
+    });
+});
+
 gulp.task('watch', ['default'], function() {
-    gulp.watch(paths.files, ['copy:files']);
-    gulp.watch(paths.scripts, ['build:js']);
+    gulp.watch(paths.files, ['copy:files']).on('change', browserSync.reload);
+    gulp.watch(paths.scripts, ['build:js']).on('change', browserSync.reload);
 });
 
 gulp.task('default', ['build:js', 'copy:files']);

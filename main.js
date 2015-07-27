@@ -1,7 +1,11 @@
+import localforage from 'localforage';
+
 import MapboxSource from './src/mapbox/source';
 import Drag from './src/drag';
 import Turnpoints from './src/turnpoints';
 import {INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM, MAPBOX_TOKEN} from './src/settings';
+
+var viewInitialized = false;
 
 var view = new ol.View({
     center: ol.proj.transform(INITIAL_MAP_CENTER, 'EPSG:4326', 'EPSG:3857'),
@@ -10,6 +14,28 @@ var view = new ol.View({
 
 var geolocation = new ol.Geolocation({
     projection: view.getProjection()
+});
+
+localforage.getItem('view', (err, value) => {
+    viewInitialized = true;
+
+    if (err || !value) {
+        // enable tracking
+        geolocation.setTracking(true);
+
+    } else {
+        view.setCenter(value.center);
+        view.setZoom(value.zoom);
+    }
+});
+
+view.on('propertychange', () => {
+    if (viewInitialized) {
+        localforage.setItem('view', {
+            center: view.getCenter(),
+            zoom: view.getZoom()
+        });
+    }
 });
 
 geolocation.on('change', () => {
@@ -29,9 +55,6 @@ geolocation.on('change', () => {
     // disable tracking again
     geolocation.setTracking(false);
 });
-
-// enable tracking
-geolocation.setTracking(true);
 
 var turnpoints = new Turnpoints();
 

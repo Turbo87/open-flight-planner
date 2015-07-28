@@ -1,6 +1,7 @@
 import localforage from 'localforage';
 
 import MapboxSource from './src/mapbox/source';
+import SkylinesAirspaceSource from './src/skylines/source';
 import {
     INITIAL_MAP_CENTER,
     INITIAL_MAP_ZOOM,
@@ -81,6 +82,10 @@ var taskLayer = new ol.layer.Vector({
     })]
 });
 
+var airspaceLayer = new ol.layer.Tile({
+    source: new SkylinesAirspaceSource()
+});
+
 var backgroundLayer = new ol.layer.Tile({
     source: new MapboxSource(MAPBOX_TOKEN)
 });
@@ -91,7 +96,7 @@ var map = new ol.Map({
         pinchRotate: false
     }),
     keyboardEventTarget: document,
-    layers: [backgroundLayer, taskLayer],
+    layers: [backgroundLayer, airspaceLayer, taskLayer],
     logo: false,
     target: 'map',
     view: view

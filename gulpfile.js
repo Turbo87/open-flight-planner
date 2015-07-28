@@ -1,48 +1,53 @@
 'use strict';
 
+var prod = (process.env.NODE_ENV === 'production');
+var out = prod ? 'out/prod' : 'out/dev';
+
 var gulp = require('gulp');
+var identity = require('gulp-identity');
+
 var babelify = require('babelify');
-var uglify = require('gulp-uglify');
+var uglify = prod ? require('gulp-uglify') : identity;
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
-var sourcemaps = require('gulp-sourcemaps');
+var sourcemaps = !prod ? require('gulp-sourcemaps') : {init: identity, write: identity};
 var gutil = require('gulp-util');
 var browserSync = require('browser-sync').create();
 
 var paths = {
     files: ['LICENSE', 'README.md', 'index.html'],
-    mainScript: 'main.js',
-    scripts: ['main.js', 'src/**/*.js'],
+    entry: 'main.js',
+    scripts: ['main.js', 'src/**/*.js']
 };
 
 gulp.task('copy:files', function() {
     return gulp.src(paths.files)
-        .pipe(gulp.dest('out'));
+        .pipe(gulp.dest(out));
 });
 
 gulp.task('build:js', function() {
     return browserify({
-            entries: paths.mainScript,
-            debug: true
+            entries: paths.entry,
+            debug: !prod
         })
         .transform(babelify)
         .bundle()
-        .pipe(source(paths.mainScript))
+        .pipe(source(paths.entry))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
-        //.pipe(uglify())
+        .pipe(uglify())
         .on('error', gutil.log)
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('out'));
+        .pipe(gulp.dest(out));
 });
 
 gulp.task('browser-sync', ['default'], function() {
     browserSync.init({
         server: {
-            baseDir: "out"
+            baseDir: out
         },
-        files: "out/**/*.*",
+        files: out + "/**/*.*",
         open: false,
         ghostMode: false,
         logConnections: true

@@ -2,7 +2,7 @@
 
 set -e
 
-cd out
+cd out/prod
 git init
 git config user.name "Travis CI"
 git config user.email "builds@travis-ci.org"

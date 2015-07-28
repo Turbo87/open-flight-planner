@@ -97,14 +97,16 @@ var map = new ol.Map({
     view: view
 });
 
-map.on('moveend', () => {
+map.on('moveend', (evt) => saveView(evt.map.getView()));
+
+function saveView(view) {
     console.log('Saving view parameters to localforage ...');
 
     localforage.setItem('view', {
         center: view.getCenter(),
         zoom: view.getZoom()
     });
-});
+}
 
 var modify = new ol.interaction.Modify({
     features: new ol.Collection([task]),

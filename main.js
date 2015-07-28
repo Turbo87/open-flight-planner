@@ -1,7 +1,6 @@
 import localforage from 'localforage';
 
 import MapboxSource from './src/mapbox/source';
-import Turnpoints from './src/turnpoints';
 import {INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM, MAPBOX_TOKEN} from './src/settings';
 
 console.log('Starting application ...');
@@ -55,19 +54,16 @@ geolocation.on('change', () => {
     geolocation.setTracking(false);
 });
 
-var turnpoints = new Turnpoints();
+var task = new ol.Feature({
+    geometry: new ol.geom.LineString([
+        ol.proj.transform([7, 51], 'EPSG:4326', 'EPSG:3857'),
+        ol.proj.transform([8, 51.5], 'EPSG:4326', 'EPSG:3857')
+    ])
+});
 
-turnpoints.push(new ol.Feature({
-    geometry: new ol.geom.Point(ol.proj.transform([7, 51], 'EPSG:4326', 'EPSG:3857'))
-}));
-
-turnpoints.push(new ol.Feature({
-    geometry: new ol.geom.Point(ol.proj.transform([8, 51.5], 'EPSG:4326', 'EPSG:3857'))
-}));
-
-var turnpointLayer = new ol.layer.Vector({
+var taskLayer = new ol.layer.Vector({
     source: new ol.source.Vector({
-        features: turnpoints.getArray()
+        features: [task]
     })
 });
 
@@ -81,7 +77,7 @@ var map = new ol.Map({
         pinchRotate: false
     }),
     keyboardEventTarget: document,
-    layers: [backgroundLayer, turnpointLayer],
+    layers: [backgroundLayer, taskLayer],
     logo: false,
     target: 'map',
     view: view
@@ -97,8 +93,9 @@ map.on('moveend', () => {
 });
 
 var modify = new ol.interaction.Modify({
-    features: turnpoints,
-    pixelTolerance: 30
+    features: new ol.Collection([task]),
+    pixelTolerance: 30,
+    deleteCondition: evt => evt.type === 'dblclick'
 });
 
 map.addInteraction(modify);

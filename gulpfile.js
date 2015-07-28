@@ -16,7 +16,7 @@ var gutil = require('gulp-util');
 var browserSync = require('browser-sync').create();
 
 var paths = {
-    files: ['LICENSE', 'README.md', 'index.html'],
+    files: ['LICENSE', 'index.html'],
     entry: 'main.js',
     scripts: ['main.js', 'src/**/*.js']
 };

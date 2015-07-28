@@ -90,11 +90,21 @@ var backgroundLayer = new ol.layer.Tile({
     source: new MapboxSource(MAPBOX_TOKEN)
 });
 
+var modify = new ol.interaction.Modify({
+    features: new ol.Collection([task]),
+    pixelTolerance: 30,
+    deleteCondition: evt => evt.type === 'dblclick'
+});
+
+var snap = new ol.interaction.Snap({
+    features: new ol.Collection([task])
+});
+
 var map = new ol.Map({
     interactions: ol.interaction.defaults({
         altShiftDragRotate: false,
         pinchRotate: false
-    }),
+    }).extend([modify, snap]),
     keyboardEventTarget: document,
     layers: [backgroundLayer, airspaceLayer, taskLayer],
     logo: false,
@@ -113,26 +123,6 @@ function saveView(view) {
     });
 }
 
-var modify = new ol.interaction.Modify({
-    features: new ol.Collection([task]),
-    pixelTolerance: 30,
-    deleteCondition: evt => evt.type === 'dblclick'
-});
-
-map.addInteraction(modify);
-
-modify.setActive(true);
-
 var fullScreenControl = new ol.control.FullScreen();
 
 fullScreenControl.setMap(map);
-
-
-var snap = new ol.interaction.Snap({
-    features: new ol.Collection([task])
-});
-
-map.addInteraction(snap);
-
-snap.setActive(true);
-

@@ -41,13 +41,19 @@ gulp.task('browser-sync', ['default'], function() {
     browserSync.init({
         server: {
             baseDir: "out"
-        }
+        },
+        files: "out/**/*.*",
+        open: false,
+        ghostMode: false,
+        logConnections: true
     });
 });
 
 gulp.task('watch', ['default'], function() {
-    gulp.watch(paths.files, ['copy:files']).on('change', browserSync.reload);
-    gulp.watch(paths.scripts, ['build:js']).on('change', browserSync.reload);
+    gulp.watch(paths.files, ['copy:files']);
+    gulp.watch(paths.scripts, ['build:js']);
 });
+
+gulp.task('serve', ['watch', 'browser-sync']);
 
 gulp.task('default', ['build:js', 'copy:files']);

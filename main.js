@@ -1,7 +1,13 @@
 import localforage from 'localforage';
 
 import MapboxSource from './src/mapbox/source';
-import {INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM, MAPBOX_TOKEN} from './src/settings';
+import {
+    INITIAL_MAP_CENTER,
+    INITIAL_MAP_ZOOM,
+    MAPBOX_TOKEN,
+    LEG_STYLE,
+    TURNPOINT_STYLE_IMAGE
+} from './src/settings';
 
 console.log('Starting application ...');
 
@@ -61,35 +67,18 @@ var task = new ol.Feature({
     ])
 });
 
-const legStyle = new ol.style.Style({
-    stroke: new ol.style.Stroke({
-        color: 'blue',
-        width: 3
-    }),
-    fill: new ol.style.Fill({
-        color: 'rgba(0, 0, 255, 0.1)'
-    })
-});
-
-const turnpointStyle = new ol.style.Style({
-    image: new ol.style.Circle({
-        radius: 5,
-        fill: new ol.style.Fill({
-            color: 'orange'
-        })
-    }),
-    geometry: function (feature) {
-        var coordinates = feature.getGeometry().getCoordinates();
-        return new ol.geom.MultiPoint(coordinates);
-    }
-});
-
 var taskLayer = new ol.layer.Vector({
     source: new ol.source.Vector({
         features: [task]
     }),
 
-    style: [legStyle, turnpointStyle]
+    style: [LEG_STYLE, new ol.style.Style({
+        image: TURNPOINT_STYLE_IMAGE,
+        geometry: function (feature) {
+            var coordinates = feature.getGeometry().getCoordinates();
+            return new ol.geom.MultiPoint(coordinates);
+        }
+    })]
 });
 
 var backgroundLayer = new ol.layer.Tile({

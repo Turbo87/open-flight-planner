@@ -27,6 +27,7 @@
     "gulp-identity": "^0.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",
+    "gulp-strip-debug": "^1.0.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "vinyl-buffer": "^1.0.0",

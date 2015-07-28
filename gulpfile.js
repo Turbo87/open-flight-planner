@@ -13,6 +13,7 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = !prod ? require('gulp-sourcemaps') : {init: identity, write: identity};
+var stripDebug = prod ? require('gulp-strip-debug') : identity;
 var gutil = require('gulp-util');
 var browserSync = require('browser-sync').create();
 
@@ -43,6 +44,7 @@ gulp.task('build:js', function() {
         .pipe(source(paths.entry))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(stripDebug())
         .pipe(uglify())
         .on('error', gutil.log)
         .pipe(sourcemaps.write('./'))

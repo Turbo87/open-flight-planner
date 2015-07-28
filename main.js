@@ -2,6 +2,8 @@ import localforage from 'localforage';
 
 import MapboxSource from './src/mapbox/source';
 import SkylinesAirspaceSource from './src/skylines/source';
+import throttle from './src/throttle';
+
 import {
     INITIAL_MAP_CENTER,
     INITIAL_MAP_ZOOM,
@@ -90,7 +92,24 @@ var backgroundLayer = new ol.layer.Tile({
     source: new MapboxSource(MAPBOX_TOKEN)
 });
 
-var modify = new ol.interaction.Modify({
+class TrackingModify extends ol.interaction.Modify {
+    constructor(options) {
+        super(options);
+
+        this.modifying = false;
+
+        this.on('modifystart', () => {
+            console.log('Modification started');
+            this.modifying = true
+        });
+        this.on('modifyend', () => {
+            console.log('Modification ended');
+            this.modifying = false
+        });
+    }
+}
+
+var modify = new TrackingModify({
     features: new ol.Collection([task]),
     pixelTolerance: 30,
     deleteCondition: evt => evt.type === 'dblclick'
@@ -113,6 +132,31 @@ var map = new ol.Map({
 });
 
 map.on('moveend', (evt) => saveView(evt.map.getView()));
+
+map.on('pointermove', () => {
+    if (modify.modifying)
+        throttle(() => printDistance(task), 30)();
+});
+
+modify.on('modifyend', () => printDistance(task));
+
+var wgs84Sphere = new ol.Sphere(6378137);
+
+function calcDistance(task) {
+    var distance = 0;
+
+    task.getGeometry().forEachSegment((c1, c2) => {
+        distance += wgs84Sphere.haversineDistance(
+            ol.proj.transform(c1, 'EPSG:3857', 'EPSG:4326'),
+            ol.proj.transform(c2, 'EPSG:3857', 'EPSG:4326')
+        )
+    });
+    return distance;
+}
+
+function printDistance(task) {
+    console.log((calcDistance(task) / 1000).toFixed(1), 'km');
+}
 
 function saveView(view) {
     console.log('Saving view parameters to localforage ...');

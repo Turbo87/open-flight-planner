@@ -138,7 +138,7 @@ map.on('pointermove', () => {
         throttle(() => printDistance(task), 30)();
 });
 
-modify.on('modifyend', () => printDistance(task));
+modify.on('modifyend', () => setTimeout(() => printDistance(task), 0));
 
 var wgs84Sphere = new ol.Sphere(6378137);
 
@@ -154,8 +154,11 @@ function calcDistance(task) {
     return distance;
 }
 
+const distanceDiv = document.getElementById('distance');
+
 function printDistance(task) {
-    console.log((calcDistance(task) / 1000).toFixed(1), 'km');
+    const distance = (calcDistance(task) / 1000).toFixed(1);
+    distanceDiv.innerHTML = `${distance} km`;
 }
 
 function saveView(view) {
@@ -170,3 +173,5 @@ function saveView(view) {
 var fullScreenControl = new ol.control.FullScreen();
 
 fullScreenControl.setMap(map);
+
+printDistance(task);

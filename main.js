@@ -126,3 +126,13 @@ modify.setActive(true);
 var fullScreenControl = new ol.control.FullScreen();
 
 fullScreenControl.setMap(map);
+
+
+var snap = new ol.interaction.Snap({
+    features: new ol.Collection([task])
+});
+
+map.addInteraction(snap);
+
+snap.setActive(true);
+

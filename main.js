@@ -4,26 +4,34 @@ import MapboxSource from './src/mapbox/source';
 import Turnpoints from './src/turnpoints';
 import {INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM, MAPBOX_TOKEN} from './src/settings';
 
-var viewInitialized = false;
+console.log('Starting application ...');
 
-var view = new ol.View({
-    center: ol.proj.transform(INITIAL_MAP_CENTER, 'EPSG:4326', 'EPSG:3857'),
-    zoom: INITIAL_MAP_ZOOM
-});
+var view = new ol.View();
 
 var geolocation = new ol.Geolocation({
     projection: view.getProjection()
 });
 
 localforage.getItem('view', (err, value) => {
-    viewInitialized = true;
-
     if (err || !value) {
-        // enable tracking
+        console.log('Enabling GeoLocation tracking ...');
         geolocation.setTracking(true);
 
+        console.log('Setting view parameters to defaults ...');
+
+        console.debug('center:', INITIAL_MAP_CENTER);
+        view.setCenter(ol.proj.transform(INITIAL_MAP_CENTER, 'EPSG:4326', 'EPSG:3857'));
+
+        console.debug('zoom:', INITIAL_MAP_ZOOM);
+        view.setZoom(INITIAL_MAP_ZOOM);
+
     } else {
+        console.log('Setting view parameters from previous session ...');
+
+        console.debug('center:', ol.proj.transform(value.center, 'EPSG:3857', 'EPSG:4326'));
         view.setCenter(value.center);
+
+        console.debug('zoom:', value.zoom);
         view.setZoom(value.zoom);
     }
 });
@@ -37,12 +45,13 @@ geolocation.on('change', () => {
         duration: 250
     }));
 
+    console.log('Setting view parameters from GeoLocation ...');
 
-    // set map center to geolocation
+    console.debug('center:', ol.proj.transform(geolocation.getPosition(), 'EPSG:3857', 'EPSG:4326'));
     view.setCenter(geolocation.getPosition());
     view.setZoom(7);
 
-    // disable tracking again
+    console.log('Disabling GeoLocation tracking ...');
     geolocation.setTracking(false);
 });
 
@@ -79,12 +88,12 @@ var map = new ol.Map({
 });
 
 map.on('moveend', () => {
-    if (viewInitialized) {
-        localforage.setItem('view', {
-            center: view.getCenter(),
-            zoom: view.getZoom()
-        });
-    }
+    console.log('Saving view parameters to localforage ...');
+
+    localforage.setItem('view', {
+        center: view.getCenter(),
+        zoom: view.getZoom()
+    });
 });
 
 var modify = new ol.interaction.Modify({

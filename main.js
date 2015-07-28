@@ -28,15 +28,6 @@ localforage.getItem('view', (err, value) => {
     }
 });
 
-view.on('propertychange', () => {
-    if (viewInitialized) {
-        localforage.setItem('view', {
-            center: view.getCenter(),
-            zoom: view.getZoom()
-        });
-    }
-});
-
 geolocation.on('change', () => {
     map.beforeRender(ol.animation.pan({
         source: view.getCenter(),
@@ -94,6 +85,15 @@ var map = new ol.Map({
     logo: false,
     target: 'map',
     view: view
+});
+
+map.on('moveend', () => {
+    if (viewInitialized) {
+        localforage.setItem('view', {
+            center: view.getCenter(),
+            zoom: view.getZoom()
+        });
+    }
 });
 
 var modify = new ol.interaction.Modify({

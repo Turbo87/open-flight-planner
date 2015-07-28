@@ -1,7 +1,6 @@
 import localforage from 'localforage';
 
 import MapboxSource from './src/mapbox/source';
-import Drag from './src/drag';
 import Turnpoints from './src/turnpoints';
 import {INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM, MAPBOX_TOKEN} from './src/settings';
 
@@ -87,10 +86,18 @@ var backgroundLayer = new ol.layer.Tile({
 
 var map = new ol.Map({
     target: 'map',
-    interactions: ol.interaction.defaults().extend([new Drag()]),
     layers: [backgroundLayer, turnpointLayer],
     view: view
 });
+
+var modify = new ol.interaction.Modify({
+    features: turnpoints,
+    pixelTolerance: 30
+});
+
+map.addInteraction(modify);
+
+modify.setActive(true);
 
 var fullScreenControl = new ol.control.FullScreen();
 

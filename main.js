@@ -85,8 +85,14 @@ var backgroundLayer = new ol.layer.Tile({
 });
 
 var map = new ol.Map({
-    target: 'map',
+    interactions: ol.interaction.defaults({
+        altShiftDragRotate: false,
+        pinchRotate: false
+    }),
+    keyboardEventTarget: document,
     layers: [backgroundLayer, turnpointLayer],
+    logo: false,
+    target: 'map',
     view: view
 });
 

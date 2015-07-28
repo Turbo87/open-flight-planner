@@ -31,7 +31,7 @@ gulp.task('build:js', function() {
         .pipe(source(paths.mainScript))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(uglify())
+        //.pipe(uglify())
         .on('error', gutil.log)
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('out'));

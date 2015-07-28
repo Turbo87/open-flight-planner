@@ -7,6 +7,7 @@ var gulp = require('gulp');
 var identity = require('gulp-identity');
 
 var babelify = require('babelify');
+var rename = require("gulp-rename");
 var uglify = prod ? require('gulp-uglify') : identity;
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -23,6 +24,12 @@ var paths = {
 
 gulp.task('copy:files', function() {
     return gulp.src(paths.files)
+        .pipe(gulp.dest(out));
+});
+
+gulp.task('copy:ol3', function() {
+    return gulp.src(['node_modules/openlayers/dist/ol' + (prod ? '' : '-debug') + '.*'])
+        .pipe(rename({basename: "ol"}))
         .pipe(gulp.dest(out));
 });
 
@@ -61,4 +68,4 @@ gulp.task('watch', ['default'], function() {
 
 gulp.task('serve', ['watch', 'browser-sync']);
 
-gulp.task('default', ['build:js', 'copy:files']);
+gulp.task('default', ['build:js', 'copy:files', 'copy:ol3']);

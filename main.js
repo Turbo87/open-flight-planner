@@ -59,15 +59,6 @@ turnpoints.push(new ol.Feature({
 var turnpointLayer = new ol.layer.Vector({
     source: new ol.source.Vector({
         features: turnpoints.getArray()
-    }),
-    style: new ol.style.Style({
-        image: new ol.style.Icon(({
-            anchor: [0.5, 46],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'pixels',
-            opacity: 0.75,
-            src: 'http://openlayers.org/en/v3.7.0/examples/data/icon.png'
-        }))
     })
 });
 

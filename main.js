@@ -8,8 +8,7 @@ import {
     INITIAL_MAP_CENTER,
     INITIAL_MAP_ZOOM,
     MAPBOX_TOKEN,
-    LEG_STYLE,
-    TURNPOINT_STYLE_IMAGE
+    TASK_STYLE
 } from './src/settings';
 
 console.log('Starting application ...');
@@ -75,13 +74,7 @@ var taskLayer = new ol.layer.Vector({
         features: [task]
     }),
 
-    style: [LEG_STYLE, new ol.style.Style({
-        image: TURNPOINT_STYLE_IMAGE,
-        geometry: function (feature) {
-            var coordinates = feature.getGeometry().getCoordinates();
-            return new ol.geom.MultiPoint(coordinates);
-        }
-    })]
+    style: TASK_STYLE
 });
 
 var airspaceLayer = new ol.layer.Tile({

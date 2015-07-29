@@ -2,20 +2,40 @@ export const INITIAL_MAP_CENTER = [7, 51];
 export const INITIAL_MAP_ZOOM = 5;
 export const MAPBOX_TOKEN = 'pk.eyJ1IjoidGJpZW5pZWsiLCJhIjoiMGFmZGM3MTE1Nzc0ZGQ2NDkwZDc2MDQ2NDdiZGViMDYifQ.yxuaR8XhvnRpesaB_BXGyQ';
 
-export const LEG_STYLE = new ol.style.Style({
-    stroke: new ol.style.Stroke({
-        color: 'blue',
-        width: 3
+export const TASK_STYLE = [
+    new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#F012BE',
+            width: 7
+        })
     }),
-    fill: new ol.style.Fill({
-        color: 'rgba(0, 0, 255, 0.1)'
+    new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 3
+        })
+    }),
+    new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 10,
+            fill: new ol.style.Fill({
+                color: '#F012BE'
+            })
+        }),
+        geometry: taskToMultiPoint
+    }),
+    new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({
+                color: 'white'
+            })
+        }),
+        geometry: taskToMultiPoint
     })
-});
+];
 
-export const TURNPOINT_STYLE_IMAGE = new ol.style.Circle({
-    radius: 5,
-    fill: new ol.style.Fill({
-        color: 'orange'
-    })
-});
-
+function taskToMultiPoint(feature) {
+    var coordinates = feature.getGeometry().getCoordinates();
+    return new ol.geom.MultiPoint(coordinates);
+}

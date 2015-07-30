@@ -8,6 +8,8 @@ Flight planning tool for glider pilots
 
 Live version at <https://turbo87.github.io/open-flight-planner/>
 
+Warning: This is experimental code and UI and is not yet polished in any way! 
+
 ![Screenshot](screenshot.png)
 
 <a href="https://flattr.com/submit/auto?user_id=turbo&url=https%3A%2F%2Fgithub.com%2FTurbo87%2Fopen-flight-planner" target="_blank"><img src="https://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a>

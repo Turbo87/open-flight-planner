@@ -150,8 +150,7 @@ function calcDistance(task) {
 const distanceDiv = document.getElementById('distance');
 
 function printDistance(task) {
-    const distance = (calcDistance(task) / 1000).toFixed(1);
-    distanceDiv.innerHTML = `${distance} km`;
+    distanceDiv.innerHTML = (calcDistance(task) / 1000).toFixed(1);
 }
 
 function saveView(view) {

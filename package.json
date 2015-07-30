@@ -13,7 +13,8 @@
   "homepage": "https://turbo87.github.com/open-flight-planner/",
   "private": true,
   "scripts": {
-    "build": "NODE_ENV=production gulp"
+    "build": "NODE_ENV=production gulp",
+    "install": "napa"
   },
   "dependencies": {
     "localforage": "^1.2.4",
@@ -30,7 +31,11 @@
     "gulp-strip-debug": "^1.0.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
+    "napa": "^1.2.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
+  },
+  "napa": {
+    "filesaver": "eligrey/FileSaver.js#e3485a652bc3387b5df9c133c184ae0753cf30de"
   }
 }

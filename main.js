@@ -1,4 +1,5 @@
 import localforage from 'localforage';
+import {saveAs} from 'filesaver/FileSaver';
 
 import MapboxSource from './src/mapbox/source';
 import SkylinesAirspaceSource from './src/skylines/source';
@@ -167,3 +168,50 @@ var fullScreenControl = new ol.control.FullScreen();
 fullScreenControl.setMap(map);
 
 printDistance(task);
+
+const downloadElement = document.getElementById('download');
+
+downloadElement.addEventListener("click", () => {
+    saveTask(task);
+}, false);
+
+function saveTask(task) {
+    const lines = ['name,code,country,lat,lon,elev,style,rwdir,rwlen,freq,desc'];
+    const turnpoints = [];
+
+    const coordinates = task.getGeometry().getCoordinates();
+
+    coordinates.forEach((coordinate, i) => {
+        const name = `"Turnpoint ${i+1}"`;
+        const [longitude, latitude] = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
+        lines.push(`${name},"TP${i+1}",,${formatCupAngle(latitude, true)},${formatCupAngle(longitude, false)},,1,,,,`);
+        turnpoints.push(name);
+    });
+
+    lines.push('-----Related Tasks-----');
+    lines.push(`"Task",${turnpoints[0]},${turnpoints.join(',')},${turnpoints[turnpoints.length - 1]}`);
+
+    saveAs(new Blob([lines.join('\n')], {type: "text/plain;charset=utf-8"}), "task.cup");
+}
+
+function formatCupAngle(degrees, isLatitude) {
+    const hemisphere = isLatitude ?
+        (degrees < 0) ? 'S' : 'N' :
+        (degrees < 0) ? 'W' : 'E';
+
+    let value = Math.abs(degrees) * 60000;
+    const dd = (value / 60000) | 0;
+
+    value %= 60000;
+    const mm = (value / 1000) | 0;
+    const mmm = Math.round(value % 1000);
+
+    return zeroFill(dd, isLatitude ? 2 : 3) + zeroFill(mm, 2) + '.' + zeroFill(mmm, 3) + hemisphere;
+}
+
+function zeroFill(number, size) {
+    number = number.toFixed(0);
+    while (number.length < size)
+        number = "0" + number;
+    return number;
+}

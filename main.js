@@ -1,5 +1,6 @@
 import localforage from 'localforage';
 import {saveAs} from 'filesaver/FileSaver';
+import padLeft from 'lodash/string/padLeft';
 
 import MapboxSource from './src/mapbox/source';
 import SkylinesAirspaceSource from './src/skylines/source';
@@ -210,8 +211,5 @@ function formatCupAngle(degrees, isLatitude) {
 }
 
 function zeroFill(number, size) {
-    number = number.toFixed(0);
-    while (number.length < size)
-        number = "0" + number;
-    return number;
+    return padLeft(number.toFixed(0), size, '0');
 }

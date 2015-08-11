@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "localforage": "^1.2.4",
+    "lodash": "^3.10.1",
     "openlayers": "^3.8.0"
   },
   "devDependencies": {

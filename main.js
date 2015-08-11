@@ -1,10 +1,10 @@
 import localforage from 'localforage';
 import {saveAs} from 'filesaver/FileSaver';
 import padLeft from 'lodash/string/padLeft';
+import throttle from 'lodash/function/throttle';
 
 import MapboxSource from './src/mapbox/source';
 import SkylinesAirspaceSource from './src/skylines/source';
-import throttle from './src/throttle';
 
 import {
     INITIAL_MAP_CENTER,
@@ -128,9 +128,11 @@ var map = new ol.Map({
 
 map.on('moveend', (evt) => saveView(evt.map.getView()));
 
+const throttledPrintDistance = throttle(() => printDistance(task), 30);
+
 map.on('pointermove', () => {
     if (modify.modifying)
-        throttle(() => printDistance(task), 30)();
+        throttledPrintDistance();
 });
 
 modify.on('modifyend', () => setTimeout(() => printDistance(task), 0));
